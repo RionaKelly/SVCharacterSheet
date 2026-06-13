@@ -1,5 +1,4 @@
 body {
-    width: 100vw;
     font-size: 18px;
 }
 
@@ -28,11 +27,21 @@ th {
     padding-bottom: 0px;
 }
 
-A
-
-.categories {
-    background-color: white;
+table {
+    width: 570px;
+    text-align: center;
 }
+
+#error  {
+    background-color: rgb(255, 157, 157);
+    margin-top: 8px;
+    display: none;
+}
+
+.categories  {
+    margin-left: 4px;
+}
+
 .categories p {
     cursor: pointer;
     display: inline;
@@ -40,34 +49,26 @@ A
 
 .three-vertical, .three-vertical table {
     display: inline-table;
+    width: 181.5px
 }
 
-.three input {
+input {
     width: 80%;
     margin: 2px;
 }
 
-.three table {
-    width: 580px;
-    text-align: center;
-}
-
-.three-vertical input {
-    width: 162.5px;
-    margin: 2px;
-}
-
 .six input {
-    width: 80px;
+    width: 75px;
     margin: 1px;
 }
 
-.four table {
+/* .four table {
     width: 570px;
-}
+} */
 
 .border {
-    width: 172.5px;
+    
+    width: 150px;
     background-color: white;
     border: 1px;
     border-color: #747474;
@@ -75,7 +76,7 @@ A
     border-radius: 3px;
 }
 
-#chaCategory, #skiCategory, #equCategory, #comCategory, #magCategory, #perCategory {
+#chaCategory, #skiCategory, #equCategory, #comCategory, #magCategory, #perCategory, #setCategory {
     background-color: white;
     display: none;
 }

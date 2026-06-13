@@ -39,94 +39,48 @@ const statusImmunities = [["Burning", 0], ["Poisoned", 0], ["Frostbite", 0], // 
 const movementSpeeds = [["Walking", 1], ["Swimming", 0], ["Climbing", 0], ["Flying", 0]]
 
 function categoryChange(category) {
+    // Changes the current category being displayed
+    document.getElementById("chaButton").style = "";
+    document.getElementById("equButton").style = "";
+    document.getElementById("comButton").style = "";
+    document.getElementById("magButton").style = "";
+    document.getElementById("perButton").style = "";
+    document.getElementById("setButton").style = "";
+    document.getElementById("chaCategory").style = "";
+    document.getElementById("equCategory").style = "";
+    document.getElementById("comCategory").style = "";
+    document.getElementById("magCategory").style = "";
+    document.getElementById("perCategory").style = "";
+    document.getElementById("setCategory").style = "";
+
     switch(category) {
         case "cha":
             document.getElementById("chaButton").style = "font-weight: bold;";
-            document.getElementById("skiButton").style = "";
-            document.getElementById("equButton").style = "";
-            document.getElementById("comButton").style = "";
-            document.getElementById("magButton").style = "";
-            document.getElementById("perButton").style = "";
             document.getElementById("chaCategory").style = "display: block;";
-            document.getElementById("skiCategory").style = "";
-            document.getElementById("equCategory").style = "";
-            document.getElementById("comCategory").style = "";
-            document.getElementById("magCategory").style = "";
-            document.getElementById("perCategory").style = "";
-
             break;        
-        case "ski":
-            document.getElementById("chaButton").style = "";
-            document.getElementById("skiButton").style = "font-weight: bold;";
-            document.getElementById("equButton").style = "";
-            document.getElementById("comButton").style = "";
-            document.getElementById("magButton").style = "";
-            document.getElementById("perButton").style = "";
-            document.getElementById("chaCategory").style = "";
-            document.getElementById("skiCategory").style = "display: block;";
-            document.getElementById("equCategory").style = "";
-            document.getElementById("comCategory").style = "";
-            document.getElementById("magCategory").style = "";
-            document.getElementById("perCategory").style = "";
         case "equ":
-            document.getElementById("chaButton").style = "";
-            document.getElementById("skiButton").style = "";
             document.getElementById("equButton").style = "font-weight: bold;";
-            document.getElementById("comButton").style = "";
-            document.getElementById("magButton").style = "";
-            document.getElementById("perButton").style = "";
-            document.getElementById("chaCategory").style = "";
-            document.getElementById("skiCategory").style = "";
             document.getElementById("equCategory").style = "display: block;";
-            document.getElementById("comCategory").style = "";
-            document.getElementById("magCategory").style = "";
-            document.getElementById("perCategory").style = "";
             break;
         case "com":
-            document.getElementById("chaButton").style = "";
-            document.getElementById("skiButton").style = "";
-            document.getElementById("equButton").style = "";
             document.getElementById("comButton").style = "font-weight: bold;";
-            document.getElementById("magButton").style = "";
-            document.getElementById("perButton").style = "";
-            document.getElementById("chaCategory").style = "";
-            document.getElementById("skiCategory").style = "";
-            document.getElementById("equCategory").style = "";
             document.getElementById("comCategory").style = "display: block;";
-            document.getElementById("magCategory").style = "";
-            document.getElementById("perCategory").style = "";
             break;
         case "mag":
-            document.getElementById("chaButton").style = "";
-            document.getElementById("skiButton").style = "";
-            document.getElementById("equButton").style = "";
-            document.getElementById("comButton").style = "";
             document.getElementById("magButton").style = "font-weight: bold;";
-            document.getElementById("perButton").style = "";
-            document.getElementById("chaCategory").style = "";
-            document.getElementById("skiCategory").style = "";
-            document.getElementById("equCategory").style = "";
-            document.getElementById("comCategory").style = "";
             document.getElementById("magCategory").style = "display: block;";
-            document.getElementById("perCategory").style = "";
             break;
         case "per":
-            document.getElementById("chaButton").style = "";
-            document.getElementById("skiButton").style = "";
-            document.getElementById("equButton").style = "";
-            document.getElementById("comButton").style = "";
-            document.getElementById("magButton").style = "";
             document.getElementById("perButton").style = "display: inline; font-weight: bold;";
-            document.getElementById("chaCategory").style = "";
-            document.getElementById("skiCategory").style = "";
-            document.getElementById("equCategory").style = "";
-            document.getElementById("comCategory").style = "";
-            document.getElementById("magCategory").style = "";
             document.getElementById("perCategory").style = "display: block;";
+            break;
+        case "set":
+            document.getElementById("setButton").style = "display: inline; font-weight: bold;";
+            document.getElementById("setCategory").style = "display: block;";
             break;
         default:
             console.log("Invalid Categoy Given")
-}
+    }
 }
 
 function updateModifiers() {
@@ -155,6 +109,14 @@ function updateModifiers() {
   updateHP();
   updateMP();
   updateMovementSpeeds();
+
+    // Error Checks
+    if ((origin == "Vampire") && (strScore == 1) && (agiScore == 1)) {
+        document.getElementById("error").innerHTML = "Error: Vampire cannot have 1 Strength and Agility"
+        document.getElementById("error").style = "display:block;"
+    } else {
+        document.getElementById("error").style = "display:none;"
+    }
 }
 
 function updateHP() {

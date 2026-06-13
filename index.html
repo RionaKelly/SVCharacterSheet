@@ -6,20 +6,35 @@
   <script src="script.js"></script>
 </head>
 
+<!-- 
+  Add Settings Category w/ category display options (one at a time, multiple at once, all at once) and reset
+  Add error box display at bottom that shows if options are invalid (eg. vampire w/ 1 Str or Dex)
+  Add stat point counter for when creating character that goes away after, or mode in settings that enables it
+  Make Skills its own category
+  Set table width instead of input with center align so that everything displays to the same width
+  Replace <br> with css margins
+-->
+
 <body onload="javascript:loadData()">
-    <div style="background-color: white;">
+  <div style="background-color: white;">
     <!-- <img src="assets\defaultIcon.png" alt="default player icon"> -->
     <h1 contenteditable="true">Character Name</h1>
-    </div>
+  </div>
   <br>
   <div class="categories">
-    <div style="display: inline;" onclick="categoryChange('cha');"><p id="chaButton" style="font-weight: bold;"">Character & Skills</p></div>
+    <div style="display: inline;" onclick="categoryChange('cha');"><p id="chaButton" style="font-weight: bold;">Character &  Skills</p></div>
     <div style="display: inline;" onclick="categoryChange('equ');"><p id="equButton">Equipment</p></div>
     <div style="display: inline;" onclick="categoryChange('com');"><p id="comButton">Combat</p></div>
     <div style="display: inline;" onclick="categoryChange('mag');"><p id="magButton">Magic</p></div>
     <div style="display: inline;" onclick="categoryChange('per');"><p id="perButton">Perks</p></div>
+    <div style="display: inline;"><p style="padding:0;cursor:default;">|</p></div>
+    <div style="display: inline;" onclick="categoryChange('set');"><p id="setButton">Settings</p></div>
   </div>
   <br>
+
+  <!--setions-->
+  <div id="setCategory">
+  </div>
 
   <!--Character & Skills-->
   <div id="chaCategory" style="display: block;">
@@ -72,6 +87,13 @@
             <td><input type="text" readonly id="minMod"></td>
             <td><input type="text" readonly id="perMod"></td>
             <td><input type="text" readonly id="lucMod"></td>
+        </tr>
+      </table>
+    </div>
+    <div id="error">
+      <table>
+        <tr>
+          <td>Temporary Error Text, You shouldn't see this.</td>
         </tr>
       </table>
     </div>
@@ -160,12 +182,13 @@
     </table>
   </div>
   <div class="three-vertical">
-    <table>
+    <table style="width:150px;">
         <tr>
           <th>Movement Speed</th>
         </tr>
         <tr>
           <td class="border"><p id="movSpe"></p></td>
+        </tr>
     </table>
   </div>
   </div>
@@ -184,5 +207,6 @@
 
   <!--Perks-->
   <div id="perCategory">
+  </div>
 
 </body>
