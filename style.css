@@ -1,0 +1,81 @@
+body {
+    width: 100vw;
+    font-size: 18px;
+}
+
+h1, p {
+  margin-top: 0em;
+  margin-bottom: 0em;
+  padding: 2px;
+  display: inline;
+}
+
+/* img {
+    height: 24px;
+    display: inline;
+    justify-content: center;
+    align-items: center;
+} */
+
+div {
+    background-color: lightgrey;
+    width:fit-content;
+    border-radius: 6px;
+    padding: 4px;
+}
+
+th {
+    padding-bottom: 0px;
+}
+
+A
+
+.categories {
+    background-color: white;
+}
+.categories p {
+    cursor: pointer;
+    display: inline;
+}
+
+.three-vertical, .three-vertical table {
+    display: inline-table;
+}
+
+.three input {
+    width: 80%;
+    margin: 2px;
+}
+
+.three table {
+    width: 580px;
+    text-align: center;
+}
+
+.three-vertical input {
+    width: 162.5px;
+    margin: 2px;
+}
+
+.six input {
+    width: 80px;
+    margin: 1px;
+}
+
+.four table {
+    width: 570px;
+}
+
+.border {
+    width: 172.5px;
+    background-color: white;
+    border: 1px;
+    border-color: #747474;
+    border-style: solid;
+    border-radius: 3px;
+}
+
+#chaCategory, #skiCategory, #equCategory, #comCategory, #magCategory, #perCategory {
+    background-color: white;
+    display: none;
+}

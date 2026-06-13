@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sundered Veil Character Sheet</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js"></script>
+</head>
+
+<body onload="javascript:loadData()">
+    <div style="background-color: white;">
+    <!-- <img src="assets\defaultIcon.png" alt="default player icon"> -->
+    <h1 contenteditable="true">Character Name</h1>
+    </div>
+  <br>
+  <div class="categories">
+    <div style="display: inline;" onclick="categoryChange('cha');"><p id="chaButton" style="font-weight: bold;"">Character & Skills</p></div>
+    <div style="display: inline;" onclick="categoryChange('equ');"><p id="equButton">Equipment</p></div>
+    <div style="display: inline;" onclick="categoryChange('com');"><p id="comButton">Combat</p></div>
+    <div style="display: inline;" onclick="categoryChange('mag');"><p id="magButton">Magic</p></div>
+    <div style="display: inline;" onclick="categoryChange('per');"><p id="perButton">Perks</p></div>
+  </div>
+  <br>
+
+  <!--Character & Skills-->
+  <div id="chaCategory" style="display: block;">
+  <div class="three">
+    <table>
+        <tr>
+          <th>Origin</th>
+          <th>Level</th>
+          <th>Experience</th>
+        </tr>
+        <tr>
+          <td><input type="text" id="origin" list="origins" onchange="originChange();"></td>
+          <td><input type="number" id="level" value="1" readonly></td>
+          <td><input type="number" step="10" min="0" placeholder="0" id="experience" onchange="expChange();"></td>
+        </tr>
+    </table>
+    <datalist id="origins">
+        <option value="Human"></option>
+        <option value="Briarling"></option>
+        <option value="Doll"></option>
+        <option value="Hornspawn"></option>
+        <option value="Scaled One: Sunborn"></option>
+        <option value="Scaled One: Murkspawn"></option>
+        <option value="Vampire"></option>
+    </datalist>
+  </div>
+  <br>
+  <div class="six">
+      <table>
+        <tr>
+          <th>Strength</th>
+          <th>Agility</th>
+          <th>Endurance</th>
+          <th>Mind</th>
+          <th>Perception</th>
+          <th>Luck</th>
+        </tr>
+        <tr>
+            <td><input type="number" value="1" min="1" max="12" id="strScore" onchange="updateModifiers()"></td>
+            <td><input type="number" value="1" min="1" max="12" id="agiScore" onchange="updateModifiers()"></td>
+            <td><input type="number" value="1" min="1" max="12" id="endScore" onchange="updateModifiers()"></td>
+            <td><input type="number" value="1" min="1" max="12" id="minScore" onchange="updateModifiers()"></td>
+            <td><input type="number" value="1" min="1" max="12" id="perScore" onchange="updateModifiers()"></td>
+            <td><input type="number" value="1" min="1" max="12" id="lucScore" onchange="updateModifiers()"></td>
+        </tr>
+        <tr>
+            <td><input type="text" readonly id="strMod"></td>
+            <td><input type="text" readonly id="agiMod"></td>
+            <td><input type="text" readonly id="endMod"></td>
+            <td><input type="text" readonly id="minMod"></td>
+            <td><input type="text" readonly id="perMod"></td>
+            <td><input type="text" readonly id="lucMod"></td>
+        </tr>
+      </table>
+    </div>
+    <br>
+    <div class="three-vertical">
+      <table>
+        <tr>
+            <th>Maximum HP</th>
+        </tr>
+        <tr>
+            <td><input type="number" id="maxHP" onchange="updateHP()"></td>
+        </tr>
+        <tr>
+            <th>Current HP</th>
+        </tr>
+        <tr>
+            <td><input type="number" min="0" id="curHP"></td>
+        </tr>
+            <th>Resolve</th>
+        </tr>
+        <tr>
+            <td><input type="number" min="0" id="resolve"></td>
+        </tr>
+      </table>
+    </div>
+    <div class="three-vertical">
+      <table>
+        <tr>
+            <th>Initiative</th>
+        </tr>
+        <tr>
+            <td><input type="number" id="initiative"></td>
+        </tr>
+        <tr>
+            <th>Phys. Status Res.</th>
+        </tr>
+        <tr>
+            <td><input type="number" id="physRes"></td>
+        </tr>
+            <th>Ment. Status Res.</th>
+        </tr>
+        <tr>
+            <td><input type="number" id="mentRes"></td>
+        </tr>
+      </table>
+    </div>
+    <div class="three-vertical">
+      <table>
+        <tr>
+            <th>Maximum MP</th>
+        </tr>
+        <tr>
+            <td><input type="number" id="maxMP" onchange="updateMP()"></td>
+        </tr>
+        <tr>
+            <th>Current MP</th>
+        </tr>
+        <tr>
+            <td><input type="number" min="0" id="curMP"></td>
+        </tr>
+            <th contenteditable="true">[Editable Resource]</th>
+        </tr>
+        <tr>
+            <td><input type="number" min="0" id="resource"></td>
+        </tr>
+      </table>
+    </div>
+    <br>
+    <br>
+  <div class="three-vertical">
+    <table>
+        <tr>
+          <th>Damage Reductions</th>
+        </tr>
+        <tr>
+          <td class="border"><p id="damRed"></p></td>
+    </table>
+  </div>
+  <div class="three-vertical">
+    <table>
+        <tr>
+          <th>Status Immunities</th>
+        </tr>
+        <tr>
+          <td class="border"><p id="staImm"></p></td>
+    </table>
+  </div>
+  <div class="three-vertical">
+    <table>
+        <tr>
+          <th>Movement Speed</th>
+        </tr>
+        <tr>
+          <td class="border"><p id="movSpe"></p></td>
+    </table>
+  </div>
+  </div>
+
+  <!--Equipment-->
+  <div id="equCategory">
+  </div>
+
+  <!--Combat-->
+  <div id="comCategory">
+  </div>
+
+  <!--Magic-->
+  <div id="magCategory">
+  </div>
+
+  <!--Perks-->
+  <div id="perCategory">
+
+</body>
