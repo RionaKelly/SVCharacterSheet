@@ -1,5 +1,7 @@
 body {
     font-size: 18px;
+    width:585px;
+    margin: auto;
 }
 
 h1, p {
@@ -30,6 +32,7 @@ th {
 table {
     width: 570px;
     text-align: center;
+    table-layout: fixed
 }
 
 #error  {
@@ -61,10 +64,6 @@ input {
     width: 75px;
     margin: 1px;
 }
-
-/* .four table {
-    width: 570px;
-} */
 
 .border {
     

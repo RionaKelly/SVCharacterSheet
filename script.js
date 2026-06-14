@@ -26,17 +26,29 @@ var curMP;
 var physRes;
 var mentRes;
 
+// Name, Modifier
 const damageReductions = [["Piercing", 0], ["Slashing", 0], ["Striking", 0], // 0-2
 ["Fire", 0], ["Lightning", 0], ["Corrosion", 0], ["Poison", 0], // 3-6
 ["Concussion", 0], ["Cold", 0], ["Hemorrhage", 0], ["Arcane", 0], // 7-10
 ["Holy", 0], ["Death", 0], ["Mental", 0], ["Void", 0]]; // 11-14
-
-const statusImmunities = [["Burning", 0], ["Poisoned", 0], ["Frostbite", 0], // 0-2
-["Open Wounds", 0], ["Horror", 0], ["Irradiated", 0], ["Fear", 0], // 3-6
-["Weakened", 0], ["Demoralized", 0], ["Toppled", 0], ["Withered", 0], // 7-10
-["Infection", 0], ["Fatique", 0], ["Cursed", 0], ["Provoked", 0], ["Marked", 0]]; // 11-15
-
+// Name, Owned?
+const statusImmunities = [["Burning", false], ["Poisoned", false], ["Frostbite", false], ["Open Wounds", false], // false-3
+["Horror", false], ["Irradiated", false], ["Fear", false], ["Weakened", false], // 4-7
+["Demoralized", false], ["Toppled", false], ["Withered", false], ["Infection", false], // 8-11
+["Fatique", false], ["Cursed", false], ["Provoked", false], ["Marked", false]]; // 12-15
+// Name, Unit
 const movementSpeeds = [["Walking", 1], ["Swimming", 0], ["Climbing", 0], ["Flying", 0]]
+
+// Name, Level, Additional Mod, Special?
+const skills = [["Athletics", 0, 0], ["Acrobatics", 0, 0, false], ["Diplomacy", 0, 0, false], ["Intimidation", 0, 0, false], // 0-3
+["Singing", 0, 0, false], ["Dancing", 0, 0, false], ["Instrument", 0, 0, true], ["Deception", 0, 0, false], // 4-7
+["Insight", 0, 0, false], ["History", 0, 0, false], ["Investigation", 0, 0, false], ["Stealth", 0, 0, false], // 8-11
+["Tool/Trade", 0, 0, true], ["Thievery", 0, 0, false], ["Nature", 0, 0, false], ["Knowledge", 0, 0, true],  // 12-15
+["Weapon Class", 0, 0, true], ["Unarmed Strikes", 0, 0, true], ["Linguistics", 0, 0, true], ["Society", 0, 0, false], // 16-19
+["Animal Handling", 0, 0, false], ["Performance", 0, 0, false], ["Work Ethic", 0, 0, false], ["Cooking", 0, 0, false],  // 20-23
+["Survival", 0, 0, false], ["Appraisal", 0, 0, false], ["Medicine", 0, 0, false], ["Navigation", 0, 0, false],  // 24-27
+["Arcana", 0, 0, false], ["Alchemy", 0, 0, false], ["Occultism", 0, 0, false], ["Religion", 0, 0, false], // 28-31
+["Mechanics", 0, 0, false], ["Operate Machine", 0, 0, false], ["Pilot (Steed)", 0, 0, false], ["Pilot (Vehicle)", 0, 0, false]] // 32-35
 
 function categoryChange(category) {
     // Changes the current category being displayed
@@ -211,7 +223,7 @@ function originChange() {
 
     switch(origin) {
         case "Human":
-            // +3 archetype points, +3 skills points, +1 to any ability
+            // +3 archetype points, +3 skill points, +1 to any ability
             break;
         case "Briarling":
             // +3 mental reduction

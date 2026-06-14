@@ -7,12 +7,11 @@
 </head>
 
 <!-- 
-  Add Settings Category w/ category display options (one at a time, multiple at once, all at once) and reset
-  Add error box display at bottom that shows if options are invalid (eg. vampire w/ 1 Str or Dex)
+  Add Settings Category w/ category display options (one at a time, multiple at once, all at once), reset, hide level 0 skills, 
   Add stat point counter for when creating character that goes away after, or mode in settings that enables it
-  Make Skills its own category
-  Set table width instead of input with center align so that everything displays to the same width
+  Make Skills its own category??
   Replace <br> with css margins
+  Update entire sheet when anything changed instead of one function, use update function with arguments to do specific functions
 -->
 
 <body onload="javascript:loadData()">
@@ -34,6 +33,9 @@
 
   <!--setions-->
   <div id="setCategory">
+    <div>
+      <p>Settings</p>
+    </div>
   </div>
 
   <!--Character & Skills-->
@@ -48,7 +50,7 @@
         <tr>
           <td><input type="text" id="origin" list="origins" onchange="originChange();"></td>
           <td><input type="number" id="level" value="1" readonly></td>
-          <td><input type="number" step="10" min="0" placeholder="0" id="experience" onchange="expChange();"></td>
+          <td><input type="number" step="10" min="0" value="0" id="experience" onchange="expChange();"></td>
         </tr>
     </table>
     <datalist id="origins">
@@ -182,7 +184,7 @@
     </table>
   </div>
   <div class="three-vertical">
-    <table style="width:150px;">
+    <table>
         <tr>
           <th>Movement Speed</th>
         </tr>
@@ -191,22 +193,77 @@
         </tr>
     </table>
   </div>
+  <br>
+  <br>
+  <div class="four">
+    <table>
+      <tr>
+        <th>Skill</th>
+        <th>Skill Level</th>
+        <th>Additional Mod</th>
+        <th>Final Bonus</th>
+      </tr>
+      <tr id="athSkill">
+        <td class="border">Athletics</td>
+        <td><input type="number" min="0" max="10" value="0"></td>
+        <td><input type="number" min="0"></td>
+        <td><input type="text" min="0" readonly></td>
+      </tr>
+      <tr>
+        <td class="border">Acrobatics</td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+      </tr>
+      <tr>
+        <td class="border">Diplomacy</td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+      </tr>
+    </table>
+  </div>
+  <br>
+  <div class="points"> <!-- hide when 0 points -->
+    <table>
+      <tr>
+        <th colspan="3">Points</th>
+      </tr>
+      <tr>
+        <td>Skill Points: <input value="5" readonly style="width:20px"></td>
+        <td>Archetype Points: <input value="12" readonly style="width:20px"></td>
+        <td>Ability Points: <input value="20" readonly style="width:20px"></td>
+      </tr>
+    </table>
+  </div>
   </div>
 
   <!--Equipment-->
   <div id="equCategory">
+    <div>
+      <p>Equipment</p>
+    </div>
   </div>
 
   <!--Combat-->
   <div id="comCategory">
+    <div>
+      <p>Combat</p>
+    </div>
   </div>
 
   <!--Magic-->
   <div id="magCategory">
+    <div>
+      <p>Magic</p>
+    </div>
   </div>
 
   <!--Perks-->
   <div id="perCategory">
+    <div>
+      <p>Perks</p>
+    </div>
   </div>
 
 </body>
