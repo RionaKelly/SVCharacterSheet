@@ -95,39 +95,114 @@ function categoryChange(category) {
     }
 }
 
-function updateModifiers() {
-  // convert ability scores into modifiers
+function updateModifiers(ability) {
+     // convert ability scores into modifiers
   
-  strScore = document.getElementById("strScore").value;
-  strMod = (4 - strScore)*-1;
-  document.getElementById("strMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format(strMod);
-  agiScore = document.getElementById("agiScore").value;
-  agiMod = (4 - agiScore)*-1;
-  document.getElementById("agiMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format((4 - agiScore)*-1);
-  endScore = document.getElementById("endScore").value;
-  endMod = (4 - endScore)*-1;
-  document.getElementById("endMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format((4 - endScore)*-1);
-  minScore = document.getElementById("minScore").value;
-  minMod = (4 - minScore)*-1;
-  document.getElementById("minMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format((4 - minScore)*-1);
-  perScore = document.getElementById("perScore").value;
-  perMod = (4 - perScore)*-1;
-  document.getElementById("perMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format((4 - perScore)*-1);
-  lucScore = document.getElementById("lucScore").value;
-  lucMod = (4 - lucScore)*-1;
-  document.getElementById("lucMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format((4 - lucScore)*-1);
+    /* strScore = document.getElementById("strScore").value;
+    strMod = (4 - strScore)*-1;
+    document.getElementById("strMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format(strMod);
+    agiScore = document.getElementById("agiScore").value;
+    agiMod = (4 - agiScore)*-1;
+    document.getElementById("agiMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format((4 - agiScore)*-1);
+    endScore = document.getElementById("endScore").value;
+    endMod = (4 - endScore)*-1;
+    document.getElementById("endMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format((4 - endScore)*-1);
+    minScore = document.getElementById("minScore").value;
+    minMod = (4 - minScore)*-1;
+    document.getElementById("minMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format((4 - minScore)*-1);
+    perScore = document.getElementById("perScore").value;
+    perMod = (4 - perScore)*-1;
+    document.getElementById("perMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format((4 - perScore)*-1);
+    lucScore = document.getElementById("lucScore").value;
+    lucMod = (4 - lucScore)*-1;
+    document.getElementById("lucMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format((4 - lucScore)*-1); */
 
-  updateStatRes();
-  updateHP();
-  updateMP();
-  updateMovementSpeeds();
+    if (origin == "") {
+        switch (ability) {
+            case "str":
+                document.getElementById("strScore").value = strScore;
+                break;
+            case "agi":
+                document.getElementById("agiScore").value = agiScore;
+                break;
+            case "end":
+                document.getElementById("endScore").value = endScore;
+                break;
+            case "min":
+                document.getElementById("minScore").value = minScore;
+                break;
+            case "per":
+                document.getElementById("perScore").value = perScore;
+                break;
+            case "luc":
+                document.getElementById("lucScore").value = lucScore;
+                break;
+        }
+        return;
+    } else {
+        document.getElementById("origin").setAttribute("readonly", true);
+    }
 
-    // Error Checks
+    switch (ability) {
+        case "str":
+            document.getElementById("abiPoints").value = Number(document.getElementById("abiPoints").value) + (strScore - Number(document.getElementById("strScore").value));
+            strScore = document.getElementById("strScore").value;
+            strMod = (4 - strScore)*-1;
+            document.getElementById("strMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format(strMod);
+            break;
+        case "agi":
+            document.getElementById("abiPoints").value = Number(document.getElementById("abiPoints").value) + (agiScore - Number(document.getElementById("agiScore").value));
+            agiScore = document.getElementById("agiScore").value;
+            agiMod = (4 - agiScore)*-1;
+            document.getElementById("agiMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format(agiMod);
+            break;
+        case "end":
+            document.getElementById("abiPoints").value = Number(document.getElementById("abiPoints").value) + (endScore - Number(document.getElementById("endScore").value));
+            endScore = document.getElementById("endScore").value;
+            endMod = (4 - endScore)*-1;
+            document.getElementById("endMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format(endMod);
+            break;
+        case "min":
+            document.getElementById("abiPoints").value = Number(document.getElementById("abiPoints").value) + (minScore - Number(document.getElementById("minScore").value));
+            minScore = document.getElementById("minScore").value;
+            minMod = (4 - minScore)*-1;
+            document.getElementById("minMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format(minMod);
+            break;
+        case "per":
+            document.getElementById("abiPoints").value = Number(document.getElementById("abiPoints").value) + (perScore - Number(document.getElementById("perScore").value));
+            perScore = document.getElementById("perScore").value;
+            perMod = (4 - perScore)*-1;
+            document.getElementById("perMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format(perMod);
+            break;
+        case "luc":
+            document.getElementById("abiPoints").value = Number(document.getElementById("abiPoints").value) + (lucScore - Number(document.getElementById("lucScore").value));
+            lucScore = document.getElementById("lucScore").value;
+            lucMod = (4 - lucScore)*-1;
+            document.getElementById("lucMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format(lucMod);
+            break;
+        default:
+            console.log("Invalid Ability Given")
+    }
+
+/*     text = "ability" + "Score"
+    eval(text) */
+
+    updateStatRes();
+    updateHP();
+    updateMP();
+    updateMovementSpeeds();
+
+    // Various Checks
     if ((origin == "Vampire") && (strScore == 1) && (agiScore == 1)) {
         document.getElementById("error").innerHTML = "Error: Vampire cannot have 1 Strength and Agility"
         document.getElementById("error").style = "display:block;"
     } else {
         document.getElementById("error").style = "display:none;"
+    }
+    if (document.getElementById("abiPoints").value <= 0) {
+        document.getElementById("abiPointsContainer").style = "display: none;"
+    } else {
+        document.getElementById("abiPointsContainer").style = "display: default;"
     }
 }
 
@@ -203,13 +278,23 @@ function updateMovementSpeeds() {
     document.getElementById("movSpe").innerHTML = text;
 }
 
+function updateSkills() {
+    var text = ''
+    text = text + '<td><input type="text" id="origin" list="origins"></td>'
+    text = text + '<td><input type="number" min="0" max="10" value="0" onchange="updateSkills()"></td>'
+    text = text + '<td><input type="number" min="0" onchange="updateSkills()"></td>'
+    text = text + '<td><input type="text" min="0" readonly></td>'
+    
+    document.getElementById("skills").innerHTML = text;
+}
+
 function originChange() {
     origin = document.getElementById("origin").value;
 
-    document.getElementById("strScore").value = 1;
+/*     document.getElementById("strScore").value = 1;
     document.getElementById("strScore").min = 1;
     document.getElementById("lucScore").value = 1;
-    document.getElementById("lucScore").min = 1;
+    document.getElementById("lucScore").min = 1; */
     
     for (let i = 0; i < damageReductions.length; i++) {
         damageReductions[i][1] = 0;
@@ -239,10 +324,16 @@ function originChange() {
             break;
         case "Hornspawn":
             // +1 strength, +1 luck, +1 hp per level, immune to fear
+            strScore = 2
+            strMod = -2
+            lucScore = 2
+            lucMod = -2
             document.getElementById("strScore").value = 2;
             document.getElementById("strScore").min = 2;
             document.getElementById("lucScore").value = 2;
             document.getElementById("lucScore").min = 2;
+            document.getElementById("strMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format(-2);
+            document.getElementById("lucMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format(-2);
             statusImmunities[6][1] = 1;
             break;
         case "Scaled One: Sunborn":
@@ -259,10 +350,11 @@ function originChange() {
             break;
         case "Vampire":
             // +1 strength or agility
+            document.getElementById("abiPoints").value = 21;
             break;
     }
+    console.log("Origin set to " + origin)
 
-    updateModifiers();
     updateDamageReductions()
     updateStatusImmunities()
     updateMovementSpeeds()
@@ -299,30 +391,45 @@ function loadData() {
     // load the player's data or sets to defaults if no data saved
 
     // load data here
+    console.log("Loading Data")
 
-    if (saved != true) {
+/*     if (saved != true) {
         resetData();
         return;
-    }
+    } */
+    resetData();
 
-    updateModifiers();
     updateHP();
     updateMP();
     updateInitiative();
+    updateSkills();
     document.getElementById("resolve").value = resolve;
     document.getElementById("curHP").value = 7;
     document.getElementById("curMP").value = 2;
-
+    console.log("Loaded");
 }
 
 function resetData() {
         saved = true;
         name = "Character Name";
+        origin = "";
         level = 1;
         experience = 0;
         maxHP = 7;
         resolve = 0;
         maxMP = 2;
+        strScore = 1;
+        agiScore = 1;
+        endScore = 1;
+        minScore = 1;
+        perScore = 1;
+        lucScore = 1;
+        strMod = -3
+        agiMod = -3
+        endMod = -3
+        minMod = -3
+        perMod = -3
+        lucMod = -3
 
         document.getElementById("maxHP").value = maxHP;
         document.getElementById("curHP").value = 7;
@@ -330,6 +437,4 @@ function resetData() {
         document.getElementById("maxMP").value = maxMP;
         document.getElementById("curMP").value = 2;
         document.getElementById("initiative").value = 0;
-        
-        updateModifiers();
 }

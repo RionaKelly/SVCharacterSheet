@@ -12,15 +12,16 @@
   Make Skills its own category??
   Replace <br> with css margins
   Update entire sheet when anything changed instead of one function, use update function with arguments to do specific functions
+  Add crit threshold stat display
 -->
 
-<body onload="javascript:loadData()">
-  <div style="background-color: white;">
+<body onload="loadData()">
+  <div style="background-color: white;width:540px;margin: auto;text-align: center;margin-top: 8px;">
     <!-- <img src="assets\defaultIcon.png" alt="default player icon"> -->
     <h1 contenteditable="true">Character Name</h1>
   </div>
   <br>
-  <div class="categories">
+  <div class="categories" style="width:540px;margin: auto;">
     <div style="display: inline;" onclick="categoryChange('cha');"><p id="chaButton" style="font-weight: bold;">Character &  Skills</p></div>
     <div style="display: inline;" onclick="categoryChange('equ');"><p id="equButton">Equipment</p></div>
     <div style="display: inline;" onclick="categoryChange('com');"><p id="comButton">Combat</p></div>
@@ -75,20 +76,23 @@
           <th>Luck</th>
         </tr>
         <tr>
-            <td><input type="number" value="1" min="1" max="12" id="strScore" onchange="updateModifiers()"></td>
-            <td><input type="number" value="1" min="1" max="12" id="agiScore" onchange="updateModifiers()"></td>
-            <td><input type="number" value="1" min="1" max="12" id="endScore" onchange="updateModifiers()"></td>
-            <td><input type="number" value="1" min="1" max="12" id="minScore" onchange="updateModifiers()"></td>
-            <td><input type="number" value="1" min="1" max="12" id="perScore" onchange="updateModifiers()"></td>
-            <td><input type="number" value="1" min="1" max="12" id="lucScore" onchange="updateModifiers()"></td>
+            <td><input type="number" value="1" min="1" max="12" id="strScore" onchange="updateModifiers('str')"></td>
+            <td><input type="number" value="1" min="1" max="12" id="agiScore" onchange="updateModifiers('agi')"></td>
+            <td><input type="number" value="1" min="1" max="12" id="endScore" onchange="updateModifiers('end')"></td>
+            <td><input type="number" value="1" min="1" max="12" id="minScore" onchange="updateModifiers('min')"></td>
+            <td><input type="number" value="1" min="1" max="12" id="perScore" onchange="updateModifiers('per')"></td>
+            <td><input type="number" value="1" min="1" max="12" id="lucScore" onchange="updateModifiers('luc')"></td>
         </tr>
         <tr>
-            <td><input type="text" readonly id="strMod"></td>
-            <td><input type="text" readonly id="agiMod"></td>
-            <td><input type="text" readonly id="endMod"></td>
-            <td><input type="text" readonly id="minMod"></td>
-            <td><input type="text" readonly id="perMod"></td>
-            <td><input type="text" readonly id="lucMod"></td>
+            <td><input type="text" value="-3" readonly id="strMod"></td>
+            <td><input type="text" value="-3" readonly id="agiMod"></td>
+            <td><input type="text" value="-3" readonly id="endMod"></td>
+            <td><input type="text" value="-3" readonly id="minMod"></td>
+            <td><input type="text" value="-3" readonly id="perMod"></td>
+            <td><input type="text" value="-3" readonly id="lucMod"></td>
+        </tr>
+        <tr id="abiPointsContainer">
+          <td colspan="6">Ability Points: <input value="20" id="abiPoints" readonly style="width:20px"></td>
         </tr>
       </table>
     </div>
@@ -195,7 +199,7 @@
   </div>
   <br>
   <br>
-  <div class="four">
+  <div>
     <table>
       <tr>
         <th>Skill</th>
@@ -203,36 +207,10 @@
         <th>Additional Mod</th>
         <th>Final Bonus</th>
       </tr>
-      <tr id="athSkill">
-        <td class="border">Athletics</td>
-        <td><input type="number" min="0" max="10" value="0"></td>
-        <td><input type="number" min="0"></td>
-        <td><input type="text" min="0" readonly></td>
+      <tr id="skills">
       </tr>
       <tr>
-        <td class="border">Acrobatics</td>
-        <td><input></td>
-        <td><input></td>
-        <td><input></td>
-      </tr>
-      <tr>
-        <td class="border">Diplomacy</td>
-        <td><input></td>
-        <td><input></td>
-        <td><input></td>
-      </tr>
-    </table>
-  </div>
-  <br>
-  <div class="points"> <!-- hide when 0 points -->
-    <table>
-      <tr>
-        <th colspan="3">Points</th>
-      </tr>
-      <tr>
-        <td>Skill Points: <input value="5" readonly style="width:20px"></td>
-        <td>Archetype Points: <input value="12" readonly style="width:20px"></td>
-        <td>Ability Points: <input value="20" readonly style="width:20px"></td>
+        <td colspan="4">Skill Points: <input value="5" readonly style="width:20px"></td>
       </tr>
     </table>
   </div>
@@ -264,6 +242,10 @@
     <div>
       <p>Perks</p>
     </div>
+    <br>
+    <div class="points"> <!-- hide when 0 points -->
+        <p>Archetype Points: <input value="12" readonly style="width:20px"></p>
+   </div>
   </div>
 
 </body>
