@@ -48,7 +48,7 @@
         <th>Character Creation Progress</th>
       </tr>
       <tr>
-        <td id="creationGuide">1. Select an Origin</td>
+        <td id="creationGuide">1/5. Select an Origin</td>
       </tr>
       <tr>
         <td><button id="creationButton" onclick="lockChoice()">Lock Origin When Ready </button></td>
@@ -92,12 +92,12 @@
           <th>Luck</th>
         </tr>
         <tr>
-            <td><input type="number" value="1" min="1" max="12" id="strScore" onchange="updateModifiers('str')"></td>
-            <td><input type="number" value="1" min="1" max="12" id="agiScore" onchange="updateModifiers('agi')"></td>
-            <td><input type="number" value="1" min="1" max="12" id="endScore" onchange="updateModifiers('end')"></td>
-            <td><input type="number" value="1" min="1" max="12" id="minScore" onchange="updateModifiers('min')"></td>
-            <td><input type="number" value="1" min="1" max="12" id="perScore" onchange="updateModifiers('per')"></td>
-            <td><input type="number" value="1" min="1" max="12" id="lucScore" onchange="updateModifiers('luc')"></td>
+            <td><input type="number" value="1" min="1" max="9" id="strScore" onchange="updateModifiers('str')"></td>
+            <td><input type="number" value="1" min="1" max="9" id="agiScore" onchange="updateModifiers('agi')"></td>
+            <td><input type="number" value="1" min="1" max="9" id="endScore" onchange="updateModifiers('end')"></td>
+            <td><input type="number" value="1" min="1" max="9" id="minScore" onchange="updateModifiers('min')"></td>
+            <td><input type="number" value="1" min="1" max="9" id="perScore" onchange="updateModifiers('per')"></td>
+            <td><input type="number" value="1" min="1" max="9" id="lucScore" onchange="updateModifiers('luc')"></td>
         </tr>
         <tr>
             <td><input type="text" value="-3" readonly id="strMod"></td>
@@ -126,13 +126,13 @@
             <th>Maximum HP</th>
         </tr>
         <tr>
-            <td><input type="number" id="maxHP" onchange="updateHP()"></td>
+            <td><input type="number" id="maxHP" readonly="false" onchange="updateHP()"></td>
         </tr>
         <tr>
             <th>Current HP</th>
         </tr>
         <tr>
-            <td><input type="number" min="0" id="curHP"></td>
+            <td><input type="number" min="0" readonly id="curHP"></td>
         </tr>
             <th>Resolve</th>
         </tr>
@@ -147,18 +147,18 @@
             <th>Initiative</th>
         </tr>
         <tr>
-            <td><input type="number" id="initiative"></td>
+            <td><input type="number" readonly id="initiative"></td>
         </tr>
         <tr>
             <th>Phys. Status Res.</th>
         </tr>
         <tr>
-            <td><input type="number" id="physRes"></td>
+            <td><input type="number" readonly id="physRes"></td>
         </tr>
             <th>Ment. Status Res.</th>
         </tr>
         <tr>
-            <td><input type="number" id="mentRes"></td>
+            <td><input type="number" readonly id="mentRes"></td>
         </tr>
       </table>
     </div>
@@ -168,13 +168,13 @@
             <th>Maximum MP</th>
         </tr>
         <tr>
-            <td><input type="number" id="maxMP" onchange="updateMP()"></td>
+            <td><input type="number" id="maxMP" readonly onchange="updateMP()"></td>
         </tr>
         <tr>
             <th>Current MP</th>
         </tr>
         <tr>
-            <td><input type="number" min="0" id="curMP"></td>
+            <td><input type="number" min="0" readonly id="curMP"></td>
         </tr>
             <th contenteditable="true">[Editable Resource]</th>
         </tr>
@@ -230,7 +230,7 @@
       <tr id="skills">
       </tr>
       <tr>
-        <td colspan="4">Skill Points: <input value="5" readonly style="width:20px"></td>
+        <td colspan="4">Skill Points: <input id="skiPoints" readonly style="width:20px"></td>
       </tr>
     </table>
   </div>
@@ -265,7 +265,7 @@
     </div>
     <br>
     <div class="points"> <!-- hide when 0 points -->
-        <p>Archetype Points: <input value="12" readonly style="width:20px"></p>
+        <p>Archetype Points: <input id="arcPoints" readonly style="width:20px"></p>
    </div>
   </div>
 

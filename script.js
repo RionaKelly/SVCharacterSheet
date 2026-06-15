@@ -19,12 +19,12 @@ var lucScore;
 var lucMod;
 
 var maxHP;
-var curHP;
 var resolve;
 var maxMP;
-var curMP;
 var physRes;
 var mentRes;
+var souls;
+var blood;
 
 var creationStage; // What stage of character creation the player has reached, for disabling modifying stats
 
@@ -67,17 +67,13 @@ function categoryChange(choice) {
     }
 }
 
-function updateCreationProgress() {
-    // Updates the Character Creation Progress box to guide player and lock choices
-
-}
-
 function lockChoice() {
+    // Locks player choices and updates elements during Character Creation
     switch(creationStage) {
         case 0:
             if (origin != "") {
                 creationStage = 1
-                document.getElementById("creationGuide").innerHTML = "2. Spend Ability Points on your Stats"
+                document.getElementById("creationGuide").innerHTML = "2/5. Spend Ability Points on your Stats"
                 document.getElementById("creationButton").innerHTML = "Lock Stats When Ready"
                 document.getElementById("origin").setAttribute("readonly", true);
             }
@@ -85,14 +81,38 @@ function lockChoice() {
         case 1:
             if (document.getElementById("abiPoints").value == 0) {
                 creationStage = 2
-                document.getElementById("creationGuide").innerHTML = "3. Yay :)"
-                document.getElementById("creationButton").innerHTML = "Lock Somethinggg idk yet :/"
+                document.getElementById("creationGuide").innerHTML = "3/5. Spend Skill Points on new Skills"
+                document.getElementById("creationButton").innerHTML = "Next Step"
                 document.getElementById("abiPointsContainer").style = "display: none;"
-                u
+                document.getElementById("strScore").min = strScore;
+                document.getElementById("agiScore").min = agiScore;
+                document.getElementById("endScore").min = endScore;
+                document.getElementById("minScore").min = minScore;
+                document.getElementById("perScore").min = perScore;
+                document.getElementById("lucScore").min = lucScore;
+                document.getElementById("strScore").max = "12";
+                document.getElementById("agiScore").max = "12";
+                document.getElementById("endScore").max = "12";
+                document.getElementById("minScore").max = "12";
+                document.getElementById("perScore").max = "12";
+                document.getElementById("lucScore").max = "12";
+                document.getElementById("maxHP").removeAttribute('readonly');
+                document.getElementById("curHP").removeAttribute('readonly');
+                document.getElementById("maxMP").removeAttribute('readonly');
+                document.getElementById("curMP").removeAttribute('readonly');
+                document.getElementById("physRes").removeAttribute('readonly');
+                document.getElementById("mentRes").removeAttribute('readonly');
+                setBaseStats()
             }
             break;
         case 2:
-
+            creationStage = 3
+            document.getElementById("creationGuide").innerHTML = "4/5. Spend Archetype Points to obtain new Perks"
+            document.getElementById("creationButton").innerHTML = "Final Step"
+            updateInitiative()
+            document.getElementById("initiative").setAttribute("readonly", false);
+            break;
+        case 3:
             break;
     }
 }
@@ -120,6 +140,7 @@ function originChange() {
     switch(origin) {
         case "Human":
             // +3 archetype points, +3 skill points, +1 to any ability
+            document.getElementById("abiPoints").value = 21;
             break;
         case "Briarling":
             // +3 mental reduction
@@ -165,10 +186,6 @@ function originChange() {
             break;
     }
     console.log("Origin set to " + origin)
-
-    updateDamageReductions()
-    updateStatusImmunities()
-    updateMovementSpeeds()
 }
 
 function updateModifiers(ability) {
@@ -246,20 +263,64 @@ function updateModifiers(ability) {
             document.getElementById("error").style = "display:none;"
         }
     } else {
-
+        switch (ability) {
+            case "str":
+                    strScore = document.getElementById("strScore").value;
+                    strMod = (4 - strScore)*-1;
+                    document.getElementById("strMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format(strMod);
+                break;
+            case "agi":
+                    agiScore = document.getElementById("agiScore").value;
+                    agiMod = (4 - agiScore)*-1;
+                    document.getElementById("agiMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format(agiMod);
+                    updateMovementSpeeds();
+                break;
+            case "end":
+                    document.getElementById("maxHP").value = Number(document.getElementById("maxHP").value) - endMod;
+                    endScore = document.getElementById("endScore").value;
+                    endMod = (4 - endScore)*-1;
+                    document.getElementById("endMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format(endMod);
+                    document.getElementById("physRes").value = 10 + endMod;
+                    document.getElementById("maxHP").value = Number(document.getElementById("maxHP").value) + endMod;
+                    updateHP();
+                break;
+            case "min":
+                    document.getElementById("maxMP").value = Number(document.getElementById("maxMP").value) - minMod;
+                    minScore = document.getElementById("minScore").value;
+                    minMod = (4 - minScore)*-1;
+                    document.getElementById("minMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format(minMod);
+                    document.getElementById("mentRes").value = 10 + minMod;
+                    document.getElementById("maxMP").value = Number(document.getElementById("maxMP").value) + minMod;
+                    updateMP();
+                break;
+            case "per":
+                    perScore = document.getElementById("perScore").value;
+                    perMod = (4 - perScore)*-1;
+                    document.getElementById("perMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format(perMod);
+                break;
+            case "luc":
+                    lucScore = document.getElementById("lucScore").value;
+                    lucMod = (4 - lucScore)*-1;
+                    document.getElementById("lucMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format(lucMod);
+                break;
+            default:
+                console.log("Invalid Ability Given: " + ability)
+        }
     }
-
-    updateStatRes();
-    updateHP();
-    updateMP();
-    updateMovementSpeeds();
-
-
 }
 
-function setBaseMiscStats() {
+function setBaseStats() {
     // Sets the base values for miscelanious stats
-    // HP
+    // Points (Bonus for Humans)
+    if (origin == "Human") {
+        document.getElementById("skiPoints").value = 8 + minMod;
+        document.getElementById("arcPoints").value = 15;
+    } else {
+        document.getElementById("skiPoints").value = 5 + minMod;
+        document.getElementById("arcPoints").value = 12;
+    }
+
+    // HP (Bonus for Human)
     if (origin == "Hornspawn") {
         maxHP = 10 + endMod + level;
     } else {
@@ -267,36 +328,35 @@ function setBaseMiscStats() {
     }
     document.getElementById("maxHP").value = maxHP;
     document.getElementById("curHP").max = maxHP;
+    document.getElementById("curHP").value = maxHP;
 
     // MP
     maxMP = 5 + minMod;
     document.getElementById("maxMP").value = maxMP;
-    document.getElementById("curMP").max = maxMP; 
+    document.getElementById("curMP").max = maxMP;
+    document.getElementById("curMP").value = maxMP;
+
+    // Status Resistances
+    document.getElementById("physRes").value = 10 + endMod;
+    document.getElementById("mentRes").value = 10 + minMod;
+
+    // Misc
+    document.getElementById("resolve").value = 0;
+    updateDamageReductions();
+    updateStatusImmunities();
+    updateMovementSpeeds();
 }
 
 function updateHP() {
     // update HP
-
-    if (creationStage < 2) {
-        document.getElementById("maxHP").value = maxHP;
-    }
-
-    var bonus = 0;
-    if (origin == "Hornspawn") {
-        bonus = level;
-    }
-
-    maxHP = 10 + endMod + bonus;
-    document.getElementById("maxHP").value = maxHP;
-    document.getElementById("curHP").max = maxHP; 
+    maxHP = document.getElementById("maxHP").value;
+    document.getElementById("curHP").max = maxHP;
 }
 
 function updateMP() {
     // update MP
-
-    maxMP = 5 + minMod;
-    document.getElementById("maxMP").value = maxMP;
-    document.getElementById("curMP").max = maxMP; 
+    maxMP = document.getElementById("maxMP").value;
+    document.getElementById("curMP").max = maxMP;
 }
 
 function updateInitiative() {
@@ -304,13 +364,6 @@ function updateInitiative() {
 
     // set to highest modifier out of insight, stealth, deception, athletics, dance, or animal handling (if mounted)
     document.getElementById("initiative").value = 0;
-}
-
-function updateStatRes() {
-    // update physical and mental status res
-
-    document.getElementById("physRes").value = 10 + endMod;
-    document.getElementById("mentRes").value = 10 + minMod;
 }
 
 function updateDamageReductions() {
@@ -400,13 +453,13 @@ function loadData() {
     } */
     resetData();
 
-    updateHP();
+/*     updateHP();
     updateMP();
     updateInitiative();
     updateSkills();
     document.getElementById("resolve").value = resolve;
     document.getElementById("curHP").value = 7;
-    document.getElementById("curMP").value = 2;
+    document.getElementById("curMP").value = 2; */
     console.log("Loaded");
 }
 
@@ -417,26 +470,10 @@ function resetData() {
         origin = "";
         level = 1;
         experience = 0;
-        maxHP = 7;
-        resolve = 0;
-        maxMP = 2;
         strScore = 1;
         agiScore = 1;
         endScore = 1;
         minScore = 1;
         perScore = 1;
         lucScore = 1;
-        strMod = -3
-        agiMod = -3
-        endMod = -3
-        minMod = -3
-        perMod = -3
-        lucMod = -3
-
-        document.getElementById("maxHP").value = maxHP;
-        document.getElementById("curHP").value = 7;
-        document.getElementById("resolve").value = resolve;
-        document.getElementById("maxMP").value = maxMP;
-        document.getElementById("curMP").value = 2;
-        document.getElementById("initiative").value = 0;
 }
