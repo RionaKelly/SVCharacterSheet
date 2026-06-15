@@ -72,16 +72,16 @@ function lockChoice() {
     switch(creationStage) {
         case 0:
             if (origin != "") {
-                creationStage = 1
-                document.getElementById("creationGuide").innerHTML = "2/5. Spend Ability Points on your Stats"
+                creationStage = 1;
+                document.getElementById("creationGuide").innerHTML = "2/4. Spend Ability Points on your Stats"
                 document.getElementById("creationButton").innerHTML = "Lock Stats When Ready"
                 document.getElementById("origin").setAttribute("readonly", true);
             }
             break;
         case 1:
             if (document.getElementById("abiPoints").value == 0) {
-                creationStage = 2
-                document.getElementById("creationGuide").innerHTML = "3/5. Spend Skill Points on new Skills"
+                creationStage = 2;
+                document.getElementById("creationGuide").innerHTML = "3/4. Spend Skill Points on new Skills"
                 document.getElementById("creationButton").innerHTML = "Next Step"
                 document.getElementById("abiPointsContainer").style = "display: none;"
                 document.getElementById("strScore").min = strScore;
@@ -106,13 +106,21 @@ function lockChoice() {
             }
             break;
         case 2:
-            creationStage = 3
-            document.getElementById("creationGuide").innerHTML = "4/5. Spend Archetype Points to obtain new Perks"
-            document.getElementById("creationButton").innerHTML = "Final Step"
+            creationStage = 3;
+            document.getElementById("creationGuide").innerHTML = "4/4. Spend Archetype Points to obtain new Perks"
+            document.getElementById("creationButton").innerHTML = "Finished"
             updateInitiative()
             document.getElementById("initiative").setAttribute("readonly", false);
+            document.getElementById("experience").removeAttribute('readonly');
             break;
         case 3:
+            creationStage = 4;
+            document.getElementById("creationGuide").innerHTML = "Your Character is ready :D Have fun!"
+            document.getElementById("creationButton").innerHTML = "Hide Guide"
+            break;
+        case 4:
+            creationStage = 5;
+            document.getElementById("creationProgress").style = "display: none;"
             break;
     }
 }
@@ -322,7 +330,7 @@ function setBaseStats() {
 
     // HP (Bonus for Human)
     if (origin == "Hornspawn") {
-        maxHP = 10 + endMod + level;
+        maxHP = 11 + endMod;
     } else {
         maxHP = 10 + endMod;
     }
@@ -405,11 +413,12 @@ function updateMovementSpeeds() {
 }
 
 function updateSkills() {
-    var text = ''
-    text = text + '<td><input type="text" id="origin" list="origins"></td>'
-    text = text + '<td><input type="number" min="0" max="10" value="0" onchange="updateSkills()"></td>'
-    text = text + '<td><input type="number" min="0" onchange="updateSkills()"></td>'
-    text = text + '<td><input type="text" min="0" readonly></td>'
+    var text = document.getElementById("skills").innerHTML;
+
+    text = text + '<td><input type="text" id="skillName" list="skillList"></td>'
+    text = text + '<td><input type="number" min="0" max="10" value="0" id="skillLevel" onchange="updateSkills()"></td>'
+    text = text + '<td><input type="number" min="0" value="0" id="skillMod" onchange="updateSkills()"></td>'
+    text = text + '<td><input type="text" min="0" value= +0 id="skillFinal" readonly></td>'
     
     document.getElementById("skills").innerHTML = text;
 }
@@ -437,8 +446,19 @@ function expChange() {
 function levelChange() {
     level = Number(level) + 1;
     document.getElementById("level").value = level;
-    
-    updateHP();
+    console.log("Level Up")
+
+    document.getElementById("arcPoints").value = document.getElementById("arcPoints").value + 9;
+    if (level <= 15) {
+    // HP: 1d8 + Endurance (+1 for Hornspawn)
+    // MP: 1d4 + Mind
+    } if (level <= 10) {
+    // Skill Points: 1d4 + Mind
+    }
+}
+
+function levelSubmit() {
+
 }
 
 function loadData() {
@@ -452,6 +472,7 @@ function loadData() {
         return;
     } */
     resetData();
+    updateSkills()
 
 /*     updateHP();
     updateMP();

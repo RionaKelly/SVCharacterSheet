@@ -8,8 +8,6 @@
 
 <!-- 
   Add Settings Category w/ category display options (one at a time, multiple at once, all at once), reset, hide level 0 skills, 
-  Add stat point counter for when creating character that goes away after, or mode in settings that enables it
-  Make Skills its own category??
   Replace <br> with css margins
   Update entire sheet when anything changed instead of one function, use update function with arguments to do specific functions
   Add crit threshold stat display
@@ -21,7 +19,7 @@
     <h1 contenteditable="true">Character Name</h1>
   </div>
   <br>
-  <div class="categories" style="width:570px;margin: auto;">
+  <div class="categories" style="width:570px;margin: auto;background-color: rgb(190, 190, 190);">
     <table>
     <tr>
     <td style="display: inline;padding: 2px;" onclick="categoryChange('cha');"><p id="chaButton" class="bold">Character</p></td>
@@ -31,7 +29,6 @@
     <td style="display: inline;padding: 2px;" onclick="categoryChange('mag');"><p id="magButton">Magic</p></td>
     <td style="display: inline;padding: 2px;" onclick="categoryChange('per');"><p id="perButton">Perks</p></td>
     <td style="display: inline;padding: 2px;" onclick="categoryChange('bac');"><p id="bacButton">Background</p></td>
-    <!-- <td style="display: inline;"><p style="padding:0;cursor:default;">|</p></td> -->
     <td style="display: inline;" onclick="categoryChange('set');"><p id="setButton">Settings</p></td>
     </tr>
   </table>
@@ -42,16 +39,40 @@
   <!--Character -->
   <div id="chaCategory" style="display: block;">
   <span id="creationProgress">
-  <div style="background-color: rgb(163, 163, 163);">
+  <div style="background-color: rgb(160, 160, 160);">
     <table>
       <tr>
-        <th>Character Creation Progress</th>
+        <th>Character Creation Guide</th>
       </tr>
       <tr>
-        <td id="creationGuide">1/5. Select an Origin</td>
+        <td id="creationGuide">1/4. Select an Origin</td>
       </tr>
       <tr>
         <td><button id="creationButton" onclick="lockChoice()">Lock Origin When Ready </button></td>
+      </tr>
+    </table>
+  </div>
+  <br>
+  </span>
+  <span id="levelChoice" style="display:none;">
+  <div style="background-color: rgb(160, 160, 160);">
+    <table>
+      <tr>
+        <th colspan="3">Level Up Increase</th>
+      </tr>
+      <tr>
+        <td colspan="3">Enter rolled numbers for HP, MP, and Skill Points without modifiers.</td>
+      </tr>
+      <tr>
+        <td><input type="number" min="1" max="8" placeholder="1d8 (HP)" id="levelRollHP"></td>
+        <td><input type="number" min="1" max="4" placeholder="1d4 (MP)" id="levelRollMP"></td>
+        <td><input type="number" min="1" max="4" placeholder="1d4 (Skill Points)" id="levelRollSP"></td>
+      </tr>
+      <tr>
+        <td colspan="3"><button id="levelSubmit" onclick="levelSubmit()">Submit Rolls</button></td>
+      </tr>
+      <tr>
+        <td colspan="3">You also gain 9 Archetype Points. You cannot increase the same Perk’s level more than once each time you level up.</td>
       </tr>
     </table>
   </div>
@@ -67,7 +88,7 @@
         <tr>
           <td><input type="text" id="origin" list="origins" onchange="originChange();"></td>
           <td><input type="number" id="level" value="1" readonly></td>
-          <td><input type="number" step="10" min="0" value="0" id="experience" onchange="expChange();"></td>
+          <td><input type="number" step="10" min="0" value="0" id="experience" readonly onchange="expChange();"></td>
         </tr>
     </table>
     <datalist id="origins">
@@ -233,6 +254,40 @@
         <td colspan="4">Skill Points: <input id="skiPoints" readonly style="width:20px"></td>
       </tr>
     </table>
+    <datalist id="skillList">
+        <option value="Athletics"></option>
+        <option value="Acrobatics"></option>
+        <option value="Diplomacy"></option>
+        <option value="Intimidation"></option>
+        <option value="Singing"></option>
+        <option value="Dancing"></option>
+        <option value="Instrument"></option>
+        <option value="Deception"></option>
+        <option value="Tool/Trade"></option>
+        <option value="Thievery"></option>
+        <option value="Nature"></option>
+        <option value="Knowledge"></option>
+        <option value="Weapon Class"></option>
+        <option value="Unarmed Strikes"></option>
+        <option value="Linguistics"></option>
+        <option value="Society"></option>
+        <option value="Animal Handling"></option>
+        <option value="Performance"></option>
+        <option value="Work Ethic"></option>
+        <option value="Cooking"></option>
+        <option value="Survival"></option>
+        <option value="Appraisal"></option>
+        <option value="Medicine"></option>
+        <option value="Navigation"></option>
+        <option value="Arcana"></option>
+        <option value="Alchemy"></option>
+        <option value="Occultism"></option>
+        <option value="Religion"></option>
+        <option value="Mechanics"></option>
+        <option value="Operate Machine"></option>
+        <option value="Pilot (Steed)"></option>
+        <option value="Pilot (Vehicle)"></option>
+    </datalist>
   </div>
   <br>
   </div>
