@@ -26,6 +26,8 @@ var curMP;
 var physRes;
 var mentRes;
 
+var creationStage; // What stage of character creation the player has reached, for disabling modifying stats
+
 // Name, Modifier
 const damageReductions = [["Piercing", 0], ["Slashing", 0], ["Striking", 0], // 0-2
 ["Fire", 0], ["Lightning", 0], ["Corrosion", 0], ["Poison", 0], // 3-6
@@ -50,74 +52,130 @@ const skills = [["Athletics", 0, 0], ["Acrobatics", 0, 0, false], ["Diplomacy", 
 ["Arcana", 0, 0, false], ["Alchemy", 0, 0, false], ["Occultism", 0, 0, false], ["Religion", 0, 0, false], // 28-31
 ["Mechanics", 0, 0, false], ["Operate Machine", 0, 0, false], ["Pilot (Steed)", 0, 0, false], ["Pilot (Vehicle)", 0, 0, false]] // 32-35
 
-function categoryChange(category) {
-    // Changes the current category being displayed
-    document.getElementById("chaButton").style = "";
-    document.getElementById("equButton").style = "";
-    document.getElementById("comButton").style = "";
-    document.getElementById("magButton").style = "";
-    document.getElementById("perButton").style = "";
-    document.getElementById("setButton").style = "";
-    document.getElementById("chaCategory").style = "";
-    document.getElementById("equCategory").style = "";
-    document.getElementById("comCategory").style = "";
-    document.getElementById("magCategory").style = "";
-    document.getElementById("perCategory").style = "";
-    document.getElementById("setCategory").style = "";
+function categoryChange(choice) {
+    // Toggles whether a category should be displayed or not
 
-    switch(category) {
-        case "cha":
-            document.getElementById("chaButton").style = "font-weight: bold;";
-            document.getElementById("chaCategory").style = "display: block;";
-            break;        
-        case "equ":
-            document.getElementById("equButton").style = "font-weight: bold;";
-            document.getElementById("equCategory").style = "display: block;";
-            break;
-        case "com":
-            document.getElementById("comButton").style = "font-weight: bold;";
-            document.getElementById("comCategory").style = "display: block;";
-            break;
-        case "mag":
-            document.getElementById("magButton").style = "font-weight: bold;";
-            document.getElementById("magCategory").style = "display: block;";
-            break;
-        case "per":
-            document.getElementById("perButton").style = "display: inline; font-weight: bold;";
-            document.getElementById("perCategory").style = "display: block;";
-            break;
-        case "set":
-            document.getElementById("setButton").style = "display: inline; font-weight: bold;";
-            document.getElementById("setCategory").style = "display: block;";
-            break;
-        default:
-            console.log("Invalid Categoy Given")
+    var button = choice + "Button";
+    var category = choice + "Category";
+
+    if (document.getElementById(button).className == "bold") {
+        document.getElementById(button).className = "";
+        document.getElementById(category).style = "";
+    } else {
+        document.getElementById(button).className = "bold";
+        document.getElementById(category).style = "display: block;";
     }
 }
 
-function updateModifiers(ability) {
-     // convert ability scores into modifiers
-  
-    /* strScore = document.getElementById("strScore").value;
-    strMod = (4 - strScore)*-1;
-    document.getElementById("strMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format(strMod);
-    agiScore = document.getElementById("agiScore").value;
-    agiMod = (4 - agiScore)*-1;
-    document.getElementById("agiMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format((4 - agiScore)*-1);
-    endScore = document.getElementById("endScore").value;
-    endMod = (4 - endScore)*-1;
-    document.getElementById("endMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format((4 - endScore)*-1);
-    minScore = document.getElementById("minScore").value;
-    minMod = (4 - minScore)*-1;
-    document.getElementById("minMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format((4 - minScore)*-1);
-    perScore = document.getElementById("perScore").value;
-    perMod = (4 - perScore)*-1;
-    document.getElementById("perMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format((4 - perScore)*-1);
-    lucScore = document.getElementById("lucScore").value;
-    lucMod = (4 - lucScore)*-1;
-    document.getElementById("lucMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format((4 - lucScore)*-1); */
+function updateCreationProgress() {
+    // Updates the Character Creation Progress box to guide player and lock choices
 
-    if (origin == "") {
+}
+
+function lockChoice() {
+    switch(creationStage) {
+        case 0:
+            if (origin != "") {
+                creationStage = 1
+                document.getElementById("creationGuide").innerHTML = "2. Spend Ability Points on your Stats"
+                document.getElementById("creationButton").innerHTML = "Lock Stats When Ready"
+                document.getElementById("origin").setAttribute("readonly", true);
+            }
+            break;
+        case 1:
+            if (document.getElementById("abiPoints").value == 0) {
+                creationStage = 2
+                document.getElementById("creationGuide").innerHTML = "3. Yay :)"
+                document.getElementById("creationButton").innerHTML = "Lock Somethinggg idk yet :/"
+                document.getElementById("abiPointsContainer").style = "display: none;"
+                u
+            }
+            break;
+        case 2:
+
+            break;
+    }
+}
+
+function originChange() {
+    // Changes the characters origin. Stage = 0/1
+
+    origin = document.getElementById("origin").value;
+
+    // Resets variables changed by origins
+    document.getElementById("strScore").value = 1;
+    document.getElementById("strScore").min = 1;
+    document.getElementById("lucScore").value = 1;
+    document.getElementById("lucScore").min = 1;
+    for (let i = 0; i < damageReductions.length; i++) {
+        damageReductions[i][1] = 0;
+    }
+    for (let i = 0; i < statusImmunities.length; i++) {
+        statusImmunities[i][1] = 0;
+    }
+    for (let i = 1; i < movementSpeeds.length; i++) {
+        movementSpeeds[i][1] = 0;
+    }
+
+    switch(origin) {
+        case "Human":
+            // +3 archetype points, +3 skill points, +1 to any ability
+            break;
+        case "Briarling":
+            // +3 mental reduction
+            damageReductions[13][1] = 3;
+            break;
+        case "Doll":
+            // +3 poison reduction, +3 hemorrhage reduction. immune to poisoned, infection, open wounds
+            damageReductions[6][1] = 3;
+            damageReductions[9][1] = 3;
+            statusImmunities[1][1] = 1;
+            statusImmunities[3][1] = 1;
+            statusImmunities[11][1] = 1;
+            break;
+        case "Hornspawn":
+            // +1 strength, +1 luck, +1 hp per level, immune to fear
+            strScore = 2
+            strMod = -2
+            lucScore = 2
+            lucMod = -2
+            document.getElementById("strScore").value = 2;
+            document.getElementById("strScore").min = 2;
+            document.getElementById("lucScore").value = 2;
+            document.getElementById("lucScore").min = 2;
+            document.getElementById("strMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format(-2);
+            document.getElementById("lucMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format(-2);
+            statusImmunities[6][1] = 1;
+            break;
+        case "Scaled One: Sunborn":
+            // + 3 fire reduction, +3 holy reduction, climbing speed = walking speed
+            damageReductions[3][1] = 3;
+            damageReductions[11][1] = 3;
+            movementSpeeds[2][1] = 4 + agiMod
+            break;
+        case "Scaled One: Murkspawn":
+            // +3 poison reduction, +3 death reduction, swimming speed = walking speed
+            damageReductions[6][1] = 3;
+            damageReductions[12][1] = 3;
+            movementSpeeds[1][1] = 4 + agiMod
+            break;
+        case "Vampire":
+            // +1 strength or agility
+            document.getElementById("abiPoints").value = 21;
+            break;
+    }
+    console.log("Origin set to " + origin)
+
+    updateDamageReductions()
+    updateStatusImmunities()
+    updateMovementSpeeds()
+}
+
+function updateModifiers(ability) {
+    // Sets Ability Scores/Modifiers. Stage = 1/2
+    
+    // Make sure player has an origin
+    if (creationStage == 0) {
         switch (ability) {
             case "str":
                 document.getElementById("strScore").value = strScore;
@@ -139,78 +197,93 @@ function updateModifiers(ability) {
                 break;
         }
         return;
+    } else if (creationStage == 1) {
+        switch (ability) {
+            case "str":
+                document.getElementById("abiPoints").value = Number(document.getElementById("abiPoints").value) + (strScore - Number(document.getElementById("strScore").value));
+                strScore = document.getElementById("strScore").value;
+                strMod = (4 - strScore)*-1;
+                document.getElementById("strMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format(strMod);
+                break;
+            case "agi":
+                document.getElementById("abiPoints").value = Number(document.getElementById("abiPoints").value) + (agiScore - Number(document.getElementById("agiScore").value));
+                agiScore = document.getElementById("agiScore").value;
+                agiMod = (4 - agiScore)*-1;
+                document.getElementById("agiMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format(agiMod);
+                break;
+            case "end":
+                document.getElementById("abiPoints").value = Number(document.getElementById("abiPoints").value) + (endScore - Number(document.getElementById("endScore").value));
+                endScore = document.getElementById("endScore").value;
+                endMod = (4 - endScore)*-1;
+                document.getElementById("endMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format(endMod);
+                break;
+            case "min":
+                document.getElementById("abiPoints").value = Number(document.getElementById("abiPoints").value) + (minScore - Number(document.getElementById("minScore").value));
+                minScore = document.getElementById("minScore").value;
+                minMod = (4 - minScore)*-1;
+                document.getElementById("minMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format(minMod);
+                break;
+            case "per":
+                document.getElementById("abiPoints").value = Number(document.getElementById("abiPoints").value) + (perScore - Number(document.getElementById("perScore").value));
+                perScore = document.getElementById("perScore").value;
+                perMod = (4 - perScore)*-1;
+                document.getElementById("perMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format(perMod);
+                break;
+            case "luc":
+                document.getElementById("abiPoints").value = Number(document.getElementById("abiPoints").value) + (lucScore - Number(document.getElementById("lucScore").value));
+                lucScore = document.getElementById("lucScore").value;
+                lucMod = (4 - lucScore)*-1;
+                document.getElementById("lucMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format(lucMod);
+                break;
+            default:
+                console.log("Invalid Ability Given: " + ability)
+        }
+        // Check if Vampire's stats are impossible
+        if ((origin == "Vampire") && (strScore == 1) && (agiScore == 1)) {
+            document.getElementById("error").innerHTML = "Error: Vampire cannot have 1 Strength and Agility"
+            document.getElementById("error").style = "display:block;"
+        } else {
+            document.getElementById("error").style = "display:none;"
+        }
     } else {
-        document.getElementById("origin").setAttribute("readonly", true);
-    }
 
-    switch (ability) {
-        case "str":
-            document.getElementById("abiPoints").value = Number(document.getElementById("abiPoints").value) + (strScore - Number(document.getElementById("strScore").value));
-            strScore = document.getElementById("strScore").value;
-            strMod = (4 - strScore)*-1;
-            document.getElementById("strMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format(strMod);
-            break;
-        case "agi":
-            document.getElementById("abiPoints").value = Number(document.getElementById("abiPoints").value) + (agiScore - Number(document.getElementById("agiScore").value));
-            agiScore = document.getElementById("agiScore").value;
-            agiMod = (4 - agiScore)*-1;
-            document.getElementById("agiMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format(agiMod);
-            break;
-        case "end":
-            document.getElementById("abiPoints").value = Number(document.getElementById("abiPoints").value) + (endScore - Number(document.getElementById("endScore").value));
-            endScore = document.getElementById("endScore").value;
-            endMod = (4 - endScore)*-1;
-            document.getElementById("endMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format(endMod);
-            break;
-        case "min":
-            document.getElementById("abiPoints").value = Number(document.getElementById("abiPoints").value) + (minScore - Number(document.getElementById("minScore").value));
-            minScore = document.getElementById("minScore").value;
-            minMod = (4 - minScore)*-1;
-            document.getElementById("minMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format(minMod);
-            break;
-        case "per":
-            document.getElementById("abiPoints").value = Number(document.getElementById("abiPoints").value) + (perScore - Number(document.getElementById("perScore").value));
-            perScore = document.getElementById("perScore").value;
-            perMod = (4 - perScore)*-1;
-            document.getElementById("perMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format(perMod);
-            break;
-        case "luc":
-            document.getElementById("abiPoints").value = Number(document.getElementById("abiPoints").value) + (lucScore - Number(document.getElementById("lucScore").value));
-            lucScore = document.getElementById("lucScore").value;
-            lucMod = (4 - lucScore)*-1;
-            document.getElementById("lucMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format(lucMod);
-            break;
-        default:
-            console.log("Invalid Ability Given")
     }
-
-/*     text = "ability" + "Score"
-    eval(text) */
 
     updateStatRes();
     updateHP();
     updateMP();
     updateMovementSpeeds();
 
-    // Various Checks
-    if ((origin == "Vampire") && (strScore == 1) && (agiScore == 1)) {
-        document.getElementById("error").innerHTML = "Error: Vampire cannot have 1 Strength and Agility"
-        document.getElementById("error").style = "display:block;"
+
+}
+
+function setBaseMiscStats() {
+    // Sets the base values for miscelanious stats
+    // HP
+    if (origin == "Hornspawn") {
+        maxHP = 10 + endMod + level;
     } else {
-        document.getElementById("error").style = "display:none;"
+        maxHP = 10 + endMod;
     }
-    if (document.getElementById("abiPoints").value <= 0) {
-        document.getElementById("abiPointsContainer").style = "display: none;"
-    } else {
-        document.getElementById("abiPointsContainer").style = "display: default;"
-    }
+    document.getElementById("maxHP").value = maxHP;
+    document.getElementById("curHP").max = maxHP;
+
+    // MP
+    maxMP = 5 + minMod;
+    document.getElementById("maxMP").value = maxMP;
+    document.getElementById("curMP").max = maxMP; 
 }
 
 function updateHP() {
     // update HP
+
+    if (creationStage < 2) {
+        document.getElementById("maxHP").value = maxHP;
+    }
+
     var bonus = 0;
     if (origin == "Hornspawn") {
-        bonus = bonus + level;
+        bonus = level;
     }
 
     maxHP = 10 + endMod + bonus;
@@ -288,78 +361,6 @@ function updateSkills() {
     document.getElementById("skills").innerHTML = text;
 }
 
-function originChange() {
-    origin = document.getElementById("origin").value;
-
-/*     document.getElementById("strScore").value = 1;
-    document.getElementById("strScore").min = 1;
-    document.getElementById("lucScore").value = 1;
-    document.getElementById("lucScore").min = 1; */
-    
-    for (let i = 0; i < damageReductions.length; i++) {
-        damageReductions[i][1] = 0;
-    }
-    for (let i = 0; i < statusImmunities.length; i++) {
-        statusImmunities[i][1] = 0;
-    }
-    for (let i = 1; i < movementSpeeds.length; i++) {
-        movementSpeeds[i][1] = 0;
-    }
-
-    switch(origin) {
-        case "Human":
-            // +3 archetype points, +3 skill points, +1 to any ability
-            break;
-        case "Briarling":
-            // +3 mental reduction
-            damageReductions[13][1] = 3;
-            break;
-        case "Doll":
-            // +3 poison reduction, +3 hemorrhage reduction. immune to poisoned, infection, open wounds
-            damageReductions[6][1] = 3;
-            damageReductions[9][1] = 3;
-            statusImmunities[1][1] = 1;
-            statusImmunities[3][1] = 1;
-            statusImmunities[11][1] = 1;
-            break;
-        case "Hornspawn":
-            // +1 strength, +1 luck, +1 hp per level, immune to fear
-            strScore = 2
-            strMod = -2
-            lucScore = 2
-            lucMod = -2
-            document.getElementById("strScore").value = 2;
-            document.getElementById("strScore").min = 2;
-            document.getElementById("lucScore").value = 2;
-            document.getElementById("lucScore").min = 2;
-            document.getElementById("strMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format(-2);
-            document.getElementById("lucMod").value = new Intl.NumberFormat("en-US", {signDisplay: "exceptZero"}).format(-2);
-            statusImmunities[6][1] = 1;
-            break;
-        case "Scaled One: Sunborn":
-            // + 3 fire reduction, +3 holy reduction, climbing speed = walking speed
-            damageReductions[3][1] = 3;
-            damageReductions[11][1] = 3;
-            movementSpeeds[2][1] = 4 + agiMod
-            break;
-        case "Scaled One: Murkspawn":
-            // +3 poison reduction, +3 death reduction, swimming speed = walking speed
-            damageReductions[6][1] = 3;
-            damageReductions[12][1] = 3;
-            movementSpeeds[1][1] = 4 + agiMod
-            break;
-        case "Vampire":
-            // +1 strength or agility
-            document.getElementById("abiPoints").value = 21;
-            break;
-    }
-    console.log("Origin set to " + origin)
-
-    updateDamageReductions()
-    updateStatusImmunities()
-    updateMovementSpeeds()
-}
-
 function expChange() {
     // check if exp has reached the requirement to level up
 
@@ -411,6 +412,7 @@ function loadData() {
 
 function resetData() {
         saved = true;
+        creationStage = 0;
         name = "Character Name";
         origin = "";
         level = 1;

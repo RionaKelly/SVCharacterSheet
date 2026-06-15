@@ -41,6 +41,10 @@ table {
     display: none;
 }
 
+.bold {
+    font-weight: bold;
+}
+
 .categories  {
     margin-left: 4px;
 }
@@ -75,7 +79,7 @@ input {
     border-radius: 3px;
 }
 
-#chaCategory, #skiCategory, #equCategory, #comCategory, #magCategory, #perCategory, #setCategory {
+#chaCategory, #skiCategory, #equCategory, #comCategory, #magCategory, #perCategory, #setCategory, #bacCategory {
     background-color: white;
     display: none;
 }

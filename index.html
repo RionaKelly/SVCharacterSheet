@@ -16,31 +16,47 @@
 -->
 
 <body onload="loadData()">
-  <div style="background-color: white;width:540px;margin: auto;text-align: center;margin-top: 8px;">
+  <div style="background-color: white;width:544px;margin: auto;text-align: center;margin-top: 8px;">
     <!-- <img src="assets\defaultIcon.png" alt="default player icon"> -->
     <h1 contenteditable="true">Character Name</h1>
   </div>
   <br>
-  <div class="categories" style="width:540px;margin: auto;">
-    <div style="display: inline;" onclick="categoryChange('cha');"><p id="chaButton" style="font-weight: bold;">Character &  Skills</p></div>
-    <div style="display: inline;" onclick="categoryChange('equ');"><p id="equButton">Equipment</p></div>
-    <div style="display: inline;" onclick="categoryChange('com');"><p id="comButton">Combat</p></div>
-    <div style="display: inline;" onclick="categoryChange('mag');"><p id="magButton">Magic</p></div>
-    <div style="display: inline;" onclick="categoryChange('per');"><p id="perButton">Perks</p></div>
-    <div style="display: inline;"><p style="padding:0;cursor:default;">|</p></div>
-    <div style="display: inline;" onclick="categoryChange('set');"><p id="setButton">Settings</p></div>
+  <div class="categories" style="width:570px;margin: auto;">
+    <table>
+    <tr>
+    <td style="display: inline;padding: 2px;" onclick="categoryChange('cha');"><p id="chaButton" class="bold">Character</p></td>
+    <td style="display: inline;padding: 2px;" onclick="categoryChange('ski');"><p id="skiButton" class="bold">Skills</p></td>
+    <td style="display: inline;padding: 2px;" onclick="categoryChange('equ');"><p id="equButton">Equipment</p></td>
+    <td style="display: inline;padding: 2px;" onclick="categoryChange('com');"><p id="comButton">Combat</p></td>
+    <td style="display: inline;padding: 2px;" onclick="categoryChange('mag');"><p id="magButton">Magic</p></td>
+    <td style="display: inline;padding: 2px;" onclick="categoryChange('per');"><p id="perButton">Perks</p></td>
+    <td style="display: inline;padding: 2px;" onclick="categoryChange('bac');"><p id="bacButton">Background</p></td>
+    <!-- <td style="display: inline;"><p style="padding:0;cursor:default;">|</p></td> -->
+    <td style="display: inline;" onclick="categoryChange('set');"><p id="setButton">Settings</p></td>
+    </tr>
+  </table>
   </div>
+
   <br>
 
-  <!--setions-->
-  <div id="setCategory">
-    <div>
-      <p>Settings</p>
-    </div>
-  </div>
-
-  <!--Character & Skills-->
+  <!--Character -->
   <div id="chaCategory" style="display: block;">
+  <span id="creationProgress">
+  <div style="background-color: rgb(163, 163, 163);">
+    <table>
+      <tr>
+        <th>Character Creation Progress</th>
+      </tr>
+      <tr>
+        <td id="creationGuide">1. Select an Origin</td>
+      </tr>
+      <tr>
+        <td><button id="creationButton" onclick="lockChoice()">Lock Origin When Ready </button></td>
+      </tr>
+    </table>
+  </div>
+  <br>
+  </span>
   <div class="three">
     <table>
         <tr>
@@ -199,7 +215,11 @@
   </div>
   <br>
   <br>
-  <div>
+  </div>
+
+  <!--Skills-->
+  <div id="skiCategory" style="display: block;">
+    <div>
     <table>
       <tr>
         <th>Skill</th>
@@ -214,6 +234,7 @@
       </tr>
     </table>
   </div>
+  <br>
   </div>
 
   <!--Equipment-->
@@ -246,6 +267,20 @@
     <div class="points"> <!-- hide when 0 points -->
         <p>Archetype Points: <input value="12" readonly style="width:20px"></p>
    </div>
+  </div>
+
+  <!--Background-->
+  <div id="bacCategory">
+    <div>
+      <p>Background</p>
+    </div>
+  </div>
+
+  <!--Settings-->
+  <div id="setCategory">
+    <div>
+      <p>Settings Page</p>
+    </div>
   </div>
 
 </body>
