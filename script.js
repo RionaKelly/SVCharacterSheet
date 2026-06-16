@@ -42,15 +42,16 @@ const statusImmunities = [["Burning", false], ["Poisoned", false], ["Frostbite",
 const movementSpeeds = [["Walking", 1], ["Swimming", 0], ["Climbing", 0], ["Flying", 0]]
 
 // Name, Level, Additional Mod, Special?
-const skills = [["Athletics", 0, 0], ["Acrobatics", 0, 0, false], ["Diplomacy", 0, 0, false], ["Intimidation", 0, 0, false], // 0-3
-["Singing", 0, 0, false], ["Dancing", 0, 0, false], ["Instrument", 0, 0, true], ["Deception", 0, 0, false], // 4-7
+const skills = [["Athletics", 0, 0, false], ["Acrobatics", 0, 0, false], ["Diplomacy", 0, 0, false], ["Intimidation", 0, 0, false], // 0-3
+["Singing", 0, 0, false], ["Dancing", 0, 0, false], ["Instrument", 0, 0, true, ""], ["Deception", 0, 0, false], // 4-7
 ["Insight", 0, 0, false], ["History", 0, 0, false], ["Investigation", 0, 0, false], ["Stealth", 0, 0, false], // 8-11
-["Tool/Trade", 0, 0, true], ["Thievery", 0, 0, false], ["Nature", 0, 0, false], ["Knowledge", 0, 0, true],  // 12-15
-["Weapon Class", 0, 0, true], ["Unarmed Strikes", 0, 0, true], ["Linguistics", 0, 0, true], ["Society", 0, 0, false], // 16-19
+["Tool/Trade", 0, 0, true, ""], ["Thievery", 0, 0, false], ["Nature", 0, 0, false], ["Knowledge", 0, 0, true, ""],  // 12-15
+["Weapon Class", 0, 0, true, ""], ["Unarmed Strikes", 0, 0, true, ""], ["Linguistics", 0, 0, true, ""], ["Society", 0, 0, false], // 16-19
 ["Animal Handling", 0, 0, false], ["Performance", 0, 0, false], ["Work Ethic", 0, 0, false], ["Cooking", 0, 0, false],  // 20-23
 ["Survival", 0, 0, false], ["Appraisal", 0, 0, false], ["Medicine", 0, 0, false], ["Navigation", 0, 0, false],  // 24-27
 ["Arcana", 0, 0, false], ["Alchemy", 0, 0, false], ["Occultism", 0, 0, false], ["Religion", 0, 0, false], // 28-31
 ["Mechanics", 0, 0, false], ["Operate Machine", 0, 0, false], ["Pilot (Steed)", 0, 0, false], ["Pilot (Vehicle)", 0, 0, false]] // 32-35
+var playerSkillAmount;
 
 function categoryChange(choice) {
     // Toggles whether a category should be displayed or not
@@ -412,15 +413,79 @@ function updateMovementSpeeds() {
     document.getElementById("movSpe").innerHTML = text;
 }
 
-function updateSkills() {
-    var text = document.getElementById("skills").innerHTML;
+function removeSkill() {
+    // Removes the last row in the Skills Table 
+    if (playerSkillAmount == 0) {
+        return;
+    }
+    var table = document.getElementById("skillTable");
+    var row = table.deleteRow(1);
+    playerSkillAmount = playerSkillAmount - 1;
+}
 
-    text = text + '<td><input type="text" id="skillName" list="skillList"></td>'
-    text = text + '<td><input type="number" min="0" max="10" value="0" id="skillLevel" onchange="updateSkills()"></td>'
-    text = text + '<td><input type="number" min="0" value="0" id="skillMod" onchange="updateSkills()"></td>'
-    text = text + '<td><input type="text" min="0" value= +0 id="skillFinal" readonly></td>'
-    
-    document.getElementById("skills").innerHTML = text;
+function addSkill() {
+    // Adds a new row in the Skills Table 
+    if (creationStage <= 2 ){//|| document.getElementById("skiPoints").value <= 0) {
+        return;
+    }
+
+    var table = document.getElementById("skillTable");
+    var row = table.insertRow(1);
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+    var cell3 = row.insertCell(2);
+    var cell4 = row.insertCell(3);
+
+    // Add some text to the new cells:
+    cell1.innerHTML = '<input type="text" id="skillName' + playerSkillAmount + '" list="skillList" onchange="updateSkill(' + playerSkillAmount + ', ' + 0 + ')">';
+    cell1.colSpan = 2;
+    cell2.innerHTML = '<input type="number" min="0" max="10" value="0" id="skillLevel' + playerSkillAmount + '" readonly onchange="updateSkill(' + playerSkillAmount + ', ' + 1 + ')">';
+    cell3.innerHTML = '<input type="number" min="0" value="0" id="skillMod' + playerSkillAmount + '" readonly onchange="updateSkill(' + playerSkillAmount + ', ' + 2 + ')">';
+    cell4.innerHTML = '<input type="text" min="0" value= +0 id="skillFinal' + playerSkillAmount + '" readonly>';
+    cell1.colSpan = 4;
+
+    console.log("Skill " + playerSkillAmount + " added")
+    playerSkillAmount = playerSkillAmount + 1;
+}
+
+function updateSkill(num, option) {
+    switch (option) {
+        case 0:
+            var skillName = document.getElementById("skillName" + num).value;
+            console.log(skillName)
+            for (let i = 0; i < skills.length; i++) {
+                if (skills[i][0] == skillName) {
+                    console.log(skillName + " found in row " + num )
+                    document.getElementById("skillName" + num).setAttribute('readonly', true);
+                    document.getElementById("skillLevel" + num).removeAttribute('readonly');
+                    document.getElementById("skillMod" + num).removeAttribute('readonly');
+                    document.getElementById("skillLevel" + num).value = skills[i][1];
+                    document.getElementById("skillMod" + num).value = skills[i][2];
+                    // If skill is special
+                    if (skills[i][3] == true) {
+                        var row = document.getElementById("skillName" + num).parentElement.parentElement;
+                        document.getElementById("skillName" + num).parentElement.colSpan = 2;
+                        var cell = row.insertCell(1);
+                        cell.innerHTML = '<input type="text" id="skillSpecial' + num + '" onchange="updateSkill(' + num + ', ' + 3 + ')">';
+                        document.getElementById("skillSpecial" + num).parentElement.setAttribute('colspan', 2);
+                        if (skillName == "Weapon Class") {
+                            document.getElementById("skillSpecial" + num).setAttribute('list', 'weaponList');
+                            console.log(skillName);
+                        } else if (skillName == "Linguistics") {
+                            document.getElementById("skillSpecial" + num).setAttribute('list', 'languageList');
+                        }
+                    }
+                return;
+                }
+           }
+            break;
+        case 1:
+
+            break;
+        case 2:
+
+            break;
+    }
 }
 
 function expChange() {
@@ -472,12 +537,10 @@ function loadData() {
         return;
     } */
     resetData();
-    updateSkills()
 
-/*     updateHP();
+/*  updateHP();
     updateMP();
     updateInitiative();
-    updateSkills();
     document.getElementById("resolve").value = resolve;
     document.getElementById("curHP").value = 7;
     document.getElementById("curMP").value = 2; */
@@ -486,7 +549,7 @@ function loadData() {
 
 function resetData() {
         saved = true;
-        creationStage = 0;
+        creationStage = 5; // CHANGE THIS TO 0 !!!!
         name = "Character Name";
         origin = "";
         level = 1;
@@ -497,4 +560,5 @@ function resetData() {
         minScore = 1;
         perScore = 1;
         lucScore = 1;
+        playerSkillAmount = 0;
 }

@@ -86,12 +86,12 @@
           <th>Experience</th>
         </tr>
         <tr>
-          <td><input type="text" id="origin" list="origins" onchange="originChange();"></td>
+          <td><input type="text" id="origin" list="originList" onchange="originChange();"></td>
           <td><input type="number" id="level" value="1" readonly></td>
           <td><input type="number" step="10" min="0" value="0" id="experience" readonly onchange="expChange();"></td>
         </tr>
     </table>
-    <datalist id="origins">
+    <datalist id="originList">
         <option value="Human"></option>
         <option value="Briarling"></option>
         <option value="Doll"></option>
@@ -241,17 +241,17 @@
   <!--Skills-->
   <div id="skiCategory" style="display: block;">
     <div>
-    <table>
+    <table id="skillTable">
       <tr>
-        <th>Skill</th>
-        <th>Skill Level</th>
-        <th>Additional Mod</th>
-        <th>Final Bonus</th>
-      </tr>
-      <tr id="skills">
+        <th colspan="4">Skill Name</th>
+        <th>Level</th>
+        <th>Bonus</th>
+        <th>Final</th>
       </tr>
       <tr>
-        <td colspan="4">Skill Points: <input id="skiPoints" readonly style="width:20px"></td>
+        <td colspan="7">Skill Points: <input id="skiPoints" readonly style="width:20px;"> | 
+        <button onclick="addSkill()">Add New Skill</button> 
+        | <button onclick="removeSkill()">Remove Last Skill</button></td>
       </tr>
     </table>
     <datalist id="skillList">
@@ -287,6 +287,25 @@
         <option value="Operate Machine"></option>
         <option value="Pilot (Steed)"></option>
         <option value="Pilot (Vehicle)"></option>
+    </datalist>
+    <datalist id="languageList">
+        <option value="Halin"></option>
+        <option value="Vinsanch"></option>
+        <option value="Neboel"></option>
+        <option value="Argenian"></option>
+        <option value="Melirikan"></option>
+        <option value="Sahr’Kasi"></option>
+        <option value="Decrethan"></option>
+        <option value="Foraelic"></option>
+    </datalist>
+    <datalist id="weaponList">
+        <option value="Heavy Arms"></option>
+        <option value="Sidearms"></option>
+        <option value="Unique"></option>
+        <option value="Traditional, Ranged"></option>
+        <option value="Firearms, Ranged"></option>
+        <option value="Dancing"></option>
+        <option value="Improvised"></option>
     </datalist>
   </div>
   <br>
