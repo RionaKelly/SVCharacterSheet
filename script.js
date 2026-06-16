@@ -46,7 +46,7 @@ const skills = [["Athletics", 0, 0, false], ["Acrobatics", 0, 0, false], ["Diplo
 ["Singing", 0, 0, false], ["Dancing", 0, 0, false], ["Instrument", 0, 0, true, ""], ["Deception", 0, 0, false], // 4-7
 ["Insight", 0, 0, false], ["History", 0, 0, false], ["Investigation", 0, 0, false], ["Stealth", 0, 0, false], // 8-11
 ["Tool/Trade", 0, 0, true, ""], ["Thievery", 0, 0, false], ["Nature", 0, 0, false], ["Knowledge", 0, 0, true, ""],  // 12-15
-["Weapon Class", 0, 0, true, ""], ["Unarmed Strikes", 0, 0, true, ""], ["Linguistics", 0, 0, true, ""], ["Society", 0, 0, false], // 16-19
+["Weapon Class", 0, 0, true, ""], ["Unarmed Strikes", 0, 0, false], ["Linguistics", 0, 0, true, ""], ["Society", 0, 0, false], // 16-19
 ["Animal Handling", 0, 0, false], ["Performance", 0, 0, false], ["Work Ethic", 0, 0, false], ["Cooking", 0, 0, false],  // 20-23
 ["Survival", 0, 0, false], ["Appraisal", 0, 0, false], ["Medicine", 0, 0, false], ["Navigation", 0, 0, false],  // 24-27
 ["Arcana", 0, 0, false], ["Alchemy", 0, 0, false], ["Occultism", 0, 0, false], ["Religion", 0, 0, false], // 28-31
@@ -420,12 +420,14 @@ function removeSkill() {
     }
     var table = document.getElementById("skillTable");
     var row = table.deleteRow(1);
+
+    console.log("Skill " + playerSkillAmount + " removed")
     playerSkillAmount = playerSkillAmount - 1;
 }
 
 function addSkill() {
     // Adds a new row in the Skills Table 
-    if (creationStage <= 2 ){//|| document.getElementById("skiPoints").value <= 0) {
+    if (creationStage <= 1) {
         return;
     }
 
@@ -449,41 +451,81 @@ function addSkill() {
 }
 
 function updateSkill(num, option) {
+    var skillName = document.getElementById("skillName" + num).value;
+    var id = -1;
+    var special = false;
+
+    checkLoop: for (let i = 0; i < skills.length; i++) {
+            if (skills[i][0] == skillName) {
+                id = i;
+                break checkLoop;
+        }
+    }
+    if (id == -1) {
+        document.getElementById("skillName" + num).value = "Error: Skill Invalid"
+        return;
+    }
+
+    if (skills[id][3] == true) {
+        special = true;
+    }
+
     switch (option) {
-        case 0:
-            var skillName = document.getElementById("skillName" + num).value;
+        case 0: // Selecting Skill
             console.log(skillName)
-            for (let i = 0; i < skills.length; i++) {
-                if (skills[i][0] == skillName) {
-                    console.log(skillName + " found in row " + num )
-                    document.getElementById("skillName" + num).setAttribute('readonly', true);
-                    document.getElementById("skillLevel" + num).removeAttribute('readonly');
-                    document.getElementById("skillMod" + num).removeAttribute('readonly');
-                    document.getElementById("skillLevel" + num).value = skills[i][1];
-                    document.getElementById("skillMod" + num).value = skills[i][2];
-                    // If skill is special
-                    if (skills[i][3] == true) {
-                        var row = document.getElementById("skillName" + num).parentElement.parentElement;
-                        document.getElementById("skillName" + num).parentElement.colSpan = 2;
-                        var cell = row.insertCell(1);
-                        cell.innerHTML = '<input type="text" id="skillSpecial' + num + '" onchange="updateSkill(' + num + ', ' + 3 + ')">';
-                        document.getElementById("skillSpecial" + num).parentElement.setAttribute('colspan', 2);
-                        if (skillName == "Weapon Class") {
-                            document.getElementById("skillSpecial" + num).setAttribute('list', 'weaponList');
-                            console.log(skillName);
-                        } else if (skillName == "Linguistics") {
-                            document.getElementById("skillSpecial" + num).setAttribute('list', 'languageList');
-                        }
-                    }
-                return;
+            console.log(skillName + " found in row " + num )
+            document.getElementById("skillName" + num).setAttribute('readonly', true);
+
+            if (special == true) {
+                var row = document.getElementById("skillName" + num).parentElement.parentElement;
+                document.getElementById("skillName" + num).parentElement.colSpan = 2;
+                var cell = row.insertCell(1);
+                cell.innerHTML = '<input type="text" id="skillSpecial' + num + '" onchange="updateSkill(' + num + ', ' + 3 + ')">';
+                document.getElementById("skillSpecial" + num).parentElement.setAttribute('colspan', 2);
+                if (skillName == "Weapon Class") {
+                    document.getElementById("skillSpecial" + num).setAttribute('list', 'weaponList');
+                    console.log(skillName);
+                } else if (skillName == "Linguistics") {
+                    document.getElementById("skillSpecial" + num).setAttribute('list', 'languageList');
                 }
+           } else {
+                document.getElementById("skillLevel" + num).removeAttribute('readonly');
+                document.getElementById("skillMod" + num).removeAttribute('readonly');
+                document.getElementById("skillLevel" + num).value = skills[id][1];
+                document.getElementById("skillMod" + num).value = skills[id][2];
            }
             break;
-        case 1:
+        case 1: // Updating Level
+            if (document.getElementById("skiPoints").value <= 0) {
+                document.getElementById("skillLevel" + num).value = skills[id][1];
+                return;
+            }
 
+            if (special == true) {
+                // create nested array in the category and repeat steps here with those numbers instead
+                // change array to object where some contain special some dont to avoid clutter
+            } else {
+                var skillLevel = document.getElementById("skillLevel" + num).value;
+                document.getElementById("skiPoints").value = Number(document.getElementById("skiPoints").value) - (skillLevel - skills[id][1]);
+                skills[id][1] = skillLevel;
+                document.getElementById("skillFinal" + num).value = Number(skillLevel) + Number(document.getElementById("skillMod" + num).value);
+            }
             break;
-        case 2:
+        case 2: // Updating Bonus
+            if (special == true) {
 
+            } else {
+                skills[id][2] = document.getElementById("skillMod" + num).value;
+                document.getElementById("skillFinal" + num).value = Number(document.getElementById("skillLevel" + num).value) + Number(document.getElementById("skillMod" + num).value);
+            }
+            break;
+        case 3: // Set Special Choice
+            skills[id][3] == document.getElementById("skillSpecial" + num).value
+            document.getElementById("skillSpecial" + num).setAttribute('readonly', true);
+            document.getElementById("skillLevel" + num).removeAttribute('readonly');
+            document.getElementById("skillMod" + num).removeAttribute('readonly');
+            document.getElementById("skillLevel" + num).value = skills[id][1];
+            document.getElementById("skillMod" + num).value = skills[id][2];
             break;
     }
 }
@@ -549,7 +591,7 @@ function loadData() {
 
 function resetData() {
         saved = true;
-        creationStage = 5; // CHANGE THIS TO 0 !!!!
+        creationStage = 0; // CHANGE THIS TO 0 !!!!
         name = "Character Name";
         origin = "";
         level = 1;
@@ -560,5 +602,11 @@ function resetData() {
         minScore = 1;
         perScore = 1;
         lucScore = 1;
+        strMod = -3;
+        agiMod = -3;
+        endMod = -3;
+        minMod = -3;
+        perMod = -3;
+        lucMod = -3;
         playerSkillAmount = 0;
 }
